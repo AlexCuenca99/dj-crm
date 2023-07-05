@@ -31,3 +31,11 @@ else:
     raise Exception(
         "Dev stage is not configured properly. Please set initial, test or prod in .env DJANGO_DEV_STAGE."
     )
+
+
+# Cors Configuration
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
