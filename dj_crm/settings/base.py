@@ -30,14 +30,14 @@ DJANGO_APPS = (
     "django.contrib.staticfiles",
 )
 
-LOCAL_APPS = ()
+LOCAL_APPS = ("applications.account",)
 
 THIRD_PARTY_APPS = (
     "rest_framework",
-    "djoser",
-    "rest_framework_simplejwt",
     "drf-yasg",
+    "djoser",
     "corsheaders",
+    "rest_framework_simplejwt",
 )
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
