@@ -32,10 +32,7 @@ DJANGO_APPS = (
 
 LOCAL_APPS = ()
 
-THIRD_PARTY_APPS = (
-    "rest_framework",
-    "djoser",
-)
+THIRD_PARTY_APPS = ("rest_framework", "djoser", "rest_framework_simplejwt", "drf-yasg")
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
 
