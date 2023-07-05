@@ -1,3 +1,5 @@
+import os
+import environ
 from pathlib import Path
 
 
@@ -5,9 +7,16 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+# Environment variables
+
+env = environ.Env()
+env.prefix = "DJANGO_"
+environ.Env.read_env(os.path.join(BASE_DIR, os.pardir, ".env"))
+
+
 # SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY = "django-insecure-3$#)-2h(vi1we3mvz060+74w+_9y-hs#$oe5xlve(!3k)xdt)d"
+SECRET_KEY = env("SECRET_KEY")
 
 
 # Application definition
