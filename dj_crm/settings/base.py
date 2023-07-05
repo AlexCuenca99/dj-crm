@@ -34,7 +34,7 @@ LOCAL_APPS = ("applications.account",)
 
 THIRD_PARTY_APPS = (
     "rest_framework",
-    "drf-yasg",
+    "drf_yasg",
     "djoser",
     "corsheaders",
     "rest_framework_simplejwt",
