@@ -87,6 +87,9 @@ class Agent(TimeStampedModel):
         "UserProfile", related_name="profiles", on_delete=models.CASCADE
     )
 
+    def __str__(self):
+        return self.user.email
+
 
 # Signal for creation of new UserProfile instance uniquely when a user is created
 def post_user_created_signal(sender, instance, created, **kwargs):
