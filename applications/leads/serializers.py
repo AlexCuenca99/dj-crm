@@ -16,3 +16,9 @@ class LeadModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lead
         fields = "__all__"
+
+
+class LeadCreateModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Lead
+        fields = "__all__"
