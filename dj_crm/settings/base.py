@@ -147,7 +147,10 @@ SIMPLE_JWT = {
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
 }
 
-
+USER_CREATE_PASSWORD_RETYPE_SERIALIZER = (
+    "applications.account.serializers.UserCreatePasswordRetypeCustomSerializer"
+)
+USER_SERIALIZER = "applications.account.serializers.UserCustomSerializer"
 # Djoser Configuration
 DJOSER = {
     "LOGIN_FIELD": "email",
@@ -167,9 +170,9 @@ DJOSER = {
         "your redirect url",
     ],
     "SERIALIZERS": {
-        "user_create": "accounts.serializers.UserCreateSerializer",  # custom serializer
-        "user": "djoser.serializers.UserSerializer",
-        "current_user": "djoser.serializers.UserSerializer",
+        "user_create_password_retype": USER_CREATE_PASSWORD_RETYPE_SERIALIZER,  # custom serializer
+        "user": USER_SERIALIZER,
+        "current_user": USER_SERIALIZER,
         "user_delete": "djoser.serializers.UserSerializer",
     },
 }
