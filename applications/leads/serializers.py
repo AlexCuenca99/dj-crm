@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from .models import Lead
-from applications.account.models import Agent
+from applications.agents.models import Agent
 
 
 class AgentModelSerializer(serializers.ModelSerializer):

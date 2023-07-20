@@ -31,7 +31,7 @@ DJANGO_APPS = (
     "django.contrib.staticfiles",
 )
 
-LOCAL_APPS = ("applications.account", "applications.leads")
+LOCAL_APPS = ("applications.account", "applications.leads", "applications.agents")
 
 THIRD_PARTY_APPS = (
     "corsheaders",

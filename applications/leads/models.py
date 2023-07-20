@@ -4,7 +4,7 @@ from model_utils.models import TimeStampedModel
 
 from applications.account.choices import GENDER_CHOICES
 from applications.account.utils import set_age
-from applications.account.models import Agent
+from applications.agents.models import Agent
 
 
 class Lead(TimeStampedModel):

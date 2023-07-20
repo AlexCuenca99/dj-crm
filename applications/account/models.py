@@ -79,19 +79,7 @@ class UserProfile(models.Model):
         return self.user.email
 
 
-class Agent(TimeStampedModel):
-    user = models.OneToOneField(
-        "CustomUser", on_delete=models.CASCADE, related_name="agents"
-    )
-    organization = models.ForeignKey(
-        "UserProfile", related_name="profiles", on_delete=models.CASCADE
-    )
-
-    def __str__(self):
-        return self.user.email
-
-
-# Signal for creation of new UserProfile instance uniquely when a user is created
+# Signal for new UserProfile instance creation only when a user is created
 def post_user_created_signal(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
