@@ -8,7 +8,7 @@ User = get_user_model()
 class UserCreatePasswordRetypeCustomSerializer(UserCreatePasswordRetypeSerializer):
     class Meta(UserCreatePasswordRetypeSerializer.Meta):
         model = User
-        fields = tuple(User.REQUIRED_FIELDS) + ("role", "password")
+        fields = tuple(User.REQUIRED_FIELDS) + ("role", "password", "email")
 
 
 class UserCustomSerializer(UserSerializer):
