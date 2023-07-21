@@ -41,6 +41,7 @@ urlpatterns = [
     path("api/v1/", include("djoser.urls")),
     path("api/v1/", include("djoser.urls.jwt")),
     path("api/v1/", include("applications.leads.urls")),
+    path("api/v1/", include("applications.agents.urls")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

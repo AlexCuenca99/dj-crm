@@ -1,13 +1,7 @@
 from rest_framework import serializers
 
 from .models import Lead
-from applications.agents.models import Agent
-
-
-class AgentModelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Agent
-        fields = "__all__"
+from applications.agents.serializers import AgentModelSerializer
 
 
 class LeadModelSerializer(serializers.ModelSerializer):
