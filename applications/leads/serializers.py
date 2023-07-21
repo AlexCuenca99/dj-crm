@@ -5,7 +5,7 @@ from applications.agents.serializers import AgentModelSerializer
 
 
 class LeadModelSerializer(serializers.ModelSerializer):
-    agent = AgentModelSerializer(many=True)
+    agent = AgentModelSerializer(many=False)
 
     class Meta:
         model = Lead
