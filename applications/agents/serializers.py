@@ -9,10 +9,7 @@ class AgentModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Agent
-        fields = [
-            "organization",
-            "user",
-        ]
+        fields = ["id", "organization", "user", "created", "modified"]
 
 
 class AgentCreateModelSerializer(serializers.ModelSerializer):
