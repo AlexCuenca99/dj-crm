@@ -31,8 +31,12 @@ class AgentModelViewSet(viewsets.ModelViewSet):
             )
 
         try:
-            output_serializer = AgentModelSerializer(serializer.save())
+            output_serializer = AgentModelSerializer(self.perform_create(serializer))
         except Exception as e:
             raise ValidationError({"detail": e})
 
         return Response(output_serializer.data, status=status.HTTP_201_CREATED)
+
+    # Send write_only data to the serializer using perform_create
+    def perform_create(self, serializer, *args, **kwargs):
+        return serializer.save(user=self.request.data["user"])
