@@ -4,7 +4,7 @@ from rest_framework import serializers
 
 from .models import Agent
 from applications.account.serializers import (
-    UserSerializer,
+    UserCustomSerializer,
     UserCreatePasswordRetypeCustomSerializer,
 )
 
@@ -12,7 +12,7 @@ User = get_user_model()
 
 
 class AgentModelSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+    user = UserCustomSerializer()
 
     class Meta:
         model = Agent
