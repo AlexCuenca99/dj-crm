@@ -29,13 +29,15 @@ class AgentCreateModelSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
-        # Create a new user using the Djoser serializer
+        # Create a new user using the Djoser Password retype serializer
         create_user_serializer = UserCreatePasswordRetypeCustomSerializer(
             data=validated_data["user"]
         )
 
         if create_user_serializer.is_valid(raise_exception=True):
             create_user_serializer.save()
+
+        # Send email to created agent
 
         # Get created user
         user = User.objects.get(email=validated_data["user"]["email"])
