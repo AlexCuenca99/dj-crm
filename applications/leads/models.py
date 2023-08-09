@@ -24,7 +24,7 @@ class Lead(TimeStampedModel):
     )
 
     def get_full_name(self):
-        return f"{self.first_name} - {self.last_name}"
+        return f"{self.first_name} {self.last_name}"
 
     def set_age(self, birth):
         self.age = set_age(birth)
