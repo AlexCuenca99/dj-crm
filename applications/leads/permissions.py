@@ -11,7 +11,12 @@ class IsOrganizer(permissions.BasePermission):
     message = {"errors": "Retrieve leads not allowed"}
 
     def has_permission(self, request, view) -> bool:
-        return bool(request.user.role == ORGANIZER and request.user.is_authenticated)
+        return bool(
+            request.user
+            and request.user.is_authenticated
+            and request.user.role == ORGANIZER
+            and request.user.is_authenticated
+        )
 
 
 class IsOrganizerOrReadOnly(permissions.BasePermission):
@@ -21,9 +26,11 @@ class IsOrganizerOrReadOnly(permissions.BasePermission):
 
     def has_permission(self, request, view) -> bool:
         return bool(
-            request.method in permissions.SAFE_METHODS
-            or request.user.role == ORGANIZER
-            and request.user.is_authenticated
+            (
+                request.method in permissions.SAFE_METHODS
+                and (request.user and request.user.is_authenticated)
+            )
+            and request.user.role == ORGANIZER
         )
 
 
