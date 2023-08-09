@@ -8,12 +8,18 @@ class IsOrganizer(permissions.BasePermission):
     The request user is an organizer user, or is a read-only request.
     """
 
-    def has_permission(self, request, view):
+    message = {"errors": "Retrieve leads not allowed"}
+
+    def has_permission(self, request, view) -> bool:
         return bool(request.user.role == ORGANIZER and request.user.is_authenticated)
 
 
 class IsOrganizerOrReadOnly(permissions.BasePermission):
-    def has_permission(self, request, view):
+    message = {
+        "errors": "User is not an organizer. You can just access to read only operations"
+    }
+
+    def has_permission(self, request, view) -> bool:
         return bool(
             request.method in permissions.SAFE_METHODS
             or request.user.role == ORGANIZER
@@ -22,5 +28,9 @@ class IsOrganizerOrReadOnly(permissions.BasePermission):
 
 
 class IsAgent(permissions.BasePermission):
-    def has_permission(self, request, view):
+    message = {
+        "errors": "User is not an organizer. You can just access to read only operations"
+    }
+
+    def has_permission(self, request, view) -> bool:
         return bool(request.user.role == AGENT and request.user.is_authenticated)
