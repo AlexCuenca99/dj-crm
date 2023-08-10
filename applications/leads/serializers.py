@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from .models import Lead
 from applications.agents.serializers import AgentModelSerializer
-from .utils import send_email_lead_created
+from .utils import build_lead_email
 
 
 class LeadModelSerializer(serializers.ModelSerializer):
@@ -20,5 +20,6 @@ class LeadCreateModelSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data) -> Lead:
         lead = Lead.objects.create(**validated_data)
-        send_email_lead_created(lead)
+
+        build_lead_email(lead)
         return lead
