@@ -37,7 +37,6 @@ class LeadModelViewSet(viewsets.ModelViewSet):
             )
         try:
             output_serializer = LeadModelSerializer(serializer.save())
-            send_email_lead_created(output_serializer.data)
         except Exception as e:
             raise ValidationError({"detail": e})
 
