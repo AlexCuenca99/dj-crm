@@ -17,8 +17,9 @@ def build_lead_email(lead_data):
         template_content = {"main_content": NEW_LEAD_CREATED_SUBJECT}
 
     created_lead_id = lead_data.id
+
     created_lead_urls = {
-        "lead_url": f"{'http'if settings.DEBUG else 'https'}://{settings.DOMAIN}/users/leads/{created_lead_id}"
+        "lead_url": f"{'http' if settings.DEBUG else 'https'}://{settings.DOMAIN}/users/leads/{created_lead_id}"
     }
     context = {
         "data": lead_data,
