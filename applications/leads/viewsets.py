@@ -6,7 +6,6 @@ from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 
 from .models import Lead
-from .utils import send_email_lead_created
 from .permissions import IsOrganizerOrReadOnly
 from .serializers import LeadModelSerializer, LeadCreateModelSerializer
 
