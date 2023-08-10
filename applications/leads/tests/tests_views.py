@@ -103,7 +103,6 @@ class GetAllLeadsTest(APITestCase):
         # Lead creation
         url = reverse("leads_app:leads-list")
         response = self.client.post(url, self.lead_info)
-        print(response.data)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_create_lead(self):
@@ -137,5 +136,5 @@ class GetAllLeadsTest(APITestCase):
         # Lead creation
         url = reverse("leads_app:leads-list")
         response = self.client.post(url, self.lead_info)
-        print(response.data)
+
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
