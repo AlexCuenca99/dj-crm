@@ -10,7 +10,9 @@ def send_email_lead_created(lead_data):
     to = "alextester1999@gmail.com"
     subject = NEW_LEAD_CREATED_SUBJECT
     created_lead_id = lead_data.id
-    created_lead_urls = {"lead_url": f"{settings.DOMAIN}/users/leads/{created_lead_id}"}
+    created_lead_urls = {
+        "lead_url": f"{'http'if settings.DEBUG else 'https'}://{settings.DOMAIN}/users/leads/{created_lead_id}"
+    }
 
     context = {"data": lead_data, "links": created_lead_urls}
     template = "new_lead_created"
