@@ -9,7 +9,6 @@ from .constants import NEW_LEAD_CREATED_SUBJECT
 def send_email_lead_created(lead_data):
     to = "alextester1999@gmail.com"
     subject = NEW_LEAD_CREATED_SUBJECT
-
     created_lead_id = lead_data.id
     created_lead_urls = {"lead_url": f"{settings.DOMAIN}/leads/{created_lead_id}"}
 
