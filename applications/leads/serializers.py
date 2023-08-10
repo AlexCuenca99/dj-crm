@@ -18,6 +18,7 @@ class LeadCreateModelSerializer(serializers.ModelSerializer):
         model = Lead
         fields = "__all__"
 
-    def create(self, validated_data):
-        send_email_lead_created(validated_data)
-        return Lead.objects.create(**validated_data)
+    def create(self, validated_data) -> Lead:
+        lead = Lead.objects.create(**validated_data)
+        send_email_lead_created(lead)
+        return lead
