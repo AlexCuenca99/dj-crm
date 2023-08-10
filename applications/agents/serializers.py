@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from .models import Agent
+from .utils import build_agent_email
 from applications.account.serializers import (
     UserCustomSerializer,
     UserCreatePasswordRetypeCustomSerializer,
@@ -37,12 +38,14 @@ class AgentCreateModelSerializer(serializers.ModelSerializer):
         if create_user_serializer.is_valid(raise_exception=True):
             create_user_serializer.save()
 
-        # Send email to created agent
-
         # Get created user
         user = User.objects.get(email=validated_data["user"]["email"])
 
         # Get created user organization
         organization = user.user_profile
 
-        return Agent.objects.create(organization=organization, user=user)
+        agent = Agent.objects.create(organization=organization, user=user)
+
+        # Send email to created agent
+        build_agent_email(agent)
+        return agent
