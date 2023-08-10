@@ -36,7 +36,7 @@ class IsOrganizerOrReadOnly(permissions.BasePermission):
             or view.action == "partial_update"
             or view.action == "destroy"
         ):
-            return bool(request.user.role == ORGANIZER)
+            return request.user.role == ORGANIZER
 
 
 class IsAgent(permissions.BasePermission):
