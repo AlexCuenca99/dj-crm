@@ -1,15 +1,15 @@
 from django.urls import reverse
 from django.contrib.auth import get_user_model
-from django.test import TestCase
+from django.test.utils import override_settings
 
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from ..models import Lead
 
 User = get_user_model()
 
 
+@override_settings(EMAIL_BACKEND="django.core.mail.backends.smtp.EmailBackend")
 class GetAllLeadsTest(APITestCase):
     def setUp(self):
         """Set up a method which is used to initialize beofer any test run"""
