@@ -9,7 +9,9 @@ from rest_framework.test import APITestCase
 User = get_user_model()
 
 
-@override_settings(EMAIL_BACKEND="django.core.mail.backends.smtp.EmailBackend")
+@override_settings(
+    EMAIL_BACKEND="django.core.mail.backends.smtp.EmailBackend", DEBUG=True
+)
 class GetAllLeadsTest(APITestCase):
     def setUp(self):
         """Set up a method which is used to initialize beofer any test run"""
@@ -51,7 +53,7 @@ class GetAllLeadsTest(APITestCase):
         """Generate agent info"""
 
         return {
-            "email": "alex-agent@crm.com",
+            "email": "lakiboj883@royalka.com",
             "birth": "1999-12-02",
             "first_name": "Alex",
             "last_name": "Cuenca",
