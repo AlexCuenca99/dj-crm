@@ -25,14 +25,18 @@ class IsOrganizerOrReadOnly(permissions.BasePermission):
     }
 
     def has_permission(self, request, view) -> bool:
-        print()
-        return bool(
-            (
-                request.method in permissions.SAFE_METHODS
-                and (request.user and request.user.is_authenticated)
-            )
-            or request.user.role == ORGANIZER
-        )
+        if not request.user.is_authenticated:
+            return False
+
+        if view.action == "retrieve" or view.action == "list":
+            return True
+        elif (
+            view.action == "create"
+            or view.action == "update"
+            or view.action == "partial_update"
+            or view.action == "destroy"
+        ):
+            return bool(request.user.role == ORGANIZER)
 
 
 class IsAgent(permissions.BasePermission):
