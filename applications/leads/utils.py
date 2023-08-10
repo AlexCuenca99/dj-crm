@@ -8,7 +8,7 @@ from .constants import NEW_LEAD_CREATED_SUBJECT, NEW_LEAD_CREATED_AND_ASSIGNED_S
 
 def build_lead_email(lead_data):
     if lead_data.agent:
-        to = lead_data.agent.email
+        to = lead_data.agent.user.email
         subject = NEW_LEAD_CREATED_AND_ASSIGNED_SUBJECT
         template_content = {"main_content": NEW_LEAD_CREATED_AND_ASSIGNED_SUBJECT}
     else:
