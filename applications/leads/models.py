@@ -20,13 +20,14 @@ class Lead(TimeStampedModel):
         "Category",
         choices=CATEGORY_CHOICES,
         max_length=10,
-        default=CATEGORY_CHOICES[0],
+        default="NEW",
     )
 
     agent = models.ForeignKey(
         Agent,
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
         related_name="leads",
     )
 
