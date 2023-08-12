@@ -1,0 +1,143 @@
+from django.urls import reverse
+from django.contrib.auth import get_user_model
+from django.test.utils import override_settings
+
+from rest_framework import status
+from rest_framework.test import APITestCase
+
+from ..models import Agent
+from ..serializers import AgentModelSerializer
+
+User = get_user_model()
+
+
+# @override_settings(
+#     EMAIL_BACKEND="django.core.mail.backends.smtp.EmailBackend", DEBUG=True
+# )
+class GetAllAgentsTest(APITestCase):
+    def setUp(self) -> None:
+        """Set up a method which is used to initialize before any test run"""
+        self.agent_info = self.generate_agent_info()
+        self.organizer_info = self.generate_organizer_info()
+
+    def generate_agent_info(self) -> dict:
+        """Generate agent info"""
+        return {
+            "email": "lakiboj883@royalka.com",
+            "birth": "1999-12-02",
+            "first_name": "Alex",
+            "last_name": "Cuenca",
+            "address": "Fausto Molina",
+            "phone": "0989181061",
+            "gender": "F",
+            "username": "AlexAgent",
+            "password": "randompassword123",
+            "re_password": "randompassword123",
+            "role": "AGT",
+        }
+
+    def generate_organizer_info(self) -> dict:
+        """Generate organizer info"""
+
+        return {
+            "email": "alex-organizer@admin1.com",
+            "birth": "1999-12-02",
+            "first_name": "Alex",
+            "last_name": "Cuenca",
+            "address": "Fausto Molina",
+            "phone": "0989181061",
+            "gender": "F",
+            "username": "AlexOrganizer",
+            "password": "randompassword123",
+            "re_password": "randompassword123",
+            "role": "ORG",
+        }
+
+    def test_get_all_agents(self):
+        """Test for getting all agents using API"""
+
+        # Create and activatye an organizer user
+        url = reverse("customuser-list")
+        response = self.client.post(url, self.organizer_info)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        print("Organizer user created", end="\n\n")
+
+        organizer_user = User.objects.get(username=self.organizer_info["username"])
+        organizer_user.is_active = True
+        organizer_user.save()
+
+        print("Organizer user activated", end="\n\n")
+
+        # Login organizer user and get token
+        url = reverse("jwt-create")
+        organizer_login_data = {
+            "email": self.organizer_info["email"],
+            "password": self.organizer_info["password"],
+        }
+
+        response = self.client.post(url, organizer_login_data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsNotNone(response.data["access"])
+
+        print("Organizer user logged in", end="\n\n")
+
+        token = response.data["access"]
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {token}")
+
+        # Agent creation
+        url = reverse("agents_app:agents-list")
+        response = self.client.get(url)
+
+        agents = Agent.objects.all()
+        serializer = AgentModelSerializer(agents, many=True)
+
+        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
+class CreateSingleAgentTest(APITestCase):
+    def setUp(self) -> None:
+        """Set up a method which is used to initialize before any test run"""
+        self.agent_info = self.generate_agent_info()
+        self.organizer_info = self.generate_organizer_info()
+
+    def generate_agent_info(self) -> dict:
+        """Generate agent info"""
+        return {
+            "email": "lakiboj883@royalka.com",
+            "birth": "1999-12-02",
+            "first_name": "Alex",
+            "last_name": "Cuenca",
+            "address": "Fausto Molina",
+            "phone": "0989181061",
+            "gender": "F",
+            "username": "AlexAgent",
+            "password": "randompassword123",
+            "re_password": "randompassword123",
+            "role": "AGT",
+        }
+
+    def generate_organizer_info(self) -> dict:
+        """Generate organizer info"""
+
+        return {
+            "email": "alex-organizer@admin1.com",
+            "birth": "1999-12-02",
+            "first_name": "Alex",
+            "last_name": "Cuenca",
+            "address": "Fausto Molina",
+            "phone": "0989181061",
+            "gender": "F",
+            "username": "AlexOrganizer",
+            "password": "randompassword123",
+            "re_password": "randompassword123",
+            "role": "ORG",
+        }
+
+    def test_unauthorizated_create_agent(self):
+        """Test for unauthorizated creation ofa single agent using API"""
+        url = reverse("agents_app:agents-list")
+        response = self.client.post(url, self.agent_info)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
