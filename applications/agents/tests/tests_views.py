@@ -103,7 +103,7 @@ class CreateSingleAgentTest(APITestCase):
     def generate_agent_info(self) -> dict:
         """Generate agent info"""
         return {
-            "email": "lakiboj883@royalka.com",
+            "email": AGENT_TEST_EMAIL_ADDRESS,
             "birth": "1999-12-02",
             "first_name": "Alex",
             "last_name": "Cuenca",
@@ -120,7 +120,7 @@ class CreateSingleAgentTest(APITestCase):
         """Generate organizer info"""
 
         return {
-            "email": "alex-organizer@admin1.com",
+            "email": ORGANIZER_TEST_EMAIL_ADDRESS,
             "birth": "1999-12-02",
             "first_name": "Alex",
             "last_name": "Cuenca",
