@@ -1,3 +1,6 @@
+ORGANIZER_TEST_EMAIL_ADDRESS = "alex@alex.com"
+AGENT_TEST_EMAIL_ADDRESS = "mafoh16227@touchend.com"
+
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from django.test.utils import override_settings
@@ -11,9 +14,9 @@ from ..serializers import AgentModelSerializer
 User = get_user_model()
 
 
-# @override_settings(
-#     EMAIL_BACKEND="django.core.mail.backends.smtp.EmailBackend", DEBUG=True
-# )
+@override_settings(
+    EMAIL_BACKEND="django.core.mail.backends.smtp.EmailBackend", DEBUG=True
+)
 class GetAllAgentsTest(APITestCase):
     def setUp(self) -> None:
         """Set up a method which is used to initialize before any test run"""
@@ -23,7 +26,7 @@ class GetAllAgentsTest(APITestCase):
     def generate_agent_info(self) -> dict:
         """Generate agent info"""
         return {
-            "email": "lakiboj883@royalka.com",
+            "email": AGENT_TEST_EMAIL_ADDRESS,
             "birth": "1999-12-02",
             "first_name": "Alex",
             "last_name": "Cuenca",
@@ -40,7 +43,7 @@ class GetAllAgentsTest(APITestCase):
         """Generate organizer info"""
 
         return {
-            "email": "alex-organizer@admin1.com",
+            "email": ORGANIZER_TEST_EMAIL_ADDRESS,
             "birth": "1999-12-02",
             "first_name": "Alex",
             "last_name": "Cuenca",
