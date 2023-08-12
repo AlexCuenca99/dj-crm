@@ -13,7 +13,7 @@ def build_agent_email(agent_data):
     created_agent_id = agent_data.id
 
     created_agent_urls = {
-        "lead_url": f"{'http' if settings.DEBUG else 'https'}://{settings.DOMAIN}/users/leads/{created_agent_id}"
+        "lead_url": f"{'http' if settings.DEBUG else 'https'}://{settings.DOMAIN}/users/agents/{created_agent_id}"
     }
     context = {
         "data": agent_data.user,
