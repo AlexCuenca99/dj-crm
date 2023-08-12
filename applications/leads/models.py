@@ -2,9 +2,10 @@ from django.db import models
 
 from model_utils.models import TimeStampedModel
 
-from applications.account.choices import GENDER_CHOICES
-from applications.account.utils import set_age
+from .choices import CATEGORY_CHOICES
 from applications.agents.models import Agent
+from applications.account.utils import set_age
+from applications.account.choices import GENDER_CHOICES
 
 
 class Lead(TimeStampedModel):
@@ -15,6 +16,12 @@ class Lead(TimeStampedModel):
     email = models.EmailField("Email", max_length=254, unique=True)
     birth = models.DateField("Birth", auto_now=False, auto_now_add=False)
     gender = models.CharField("Gender", choices=GENDER_CHOICES, max_length=10)
+    category = models.CharField(
+        "Category",
+        choices=CATEGORY_CHOICES,
+        max_length=10,
+        default=CATEGORY_CHOICES[0],
+    )
 
     agent = models.ForeignKey(
         Agent,
