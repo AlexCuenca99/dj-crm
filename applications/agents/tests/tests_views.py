@@ -14,9 +14,6 @@ from ..serializers import AgentModelSerializer
 User = get_user_model()
 
 
-@override_settings(
-    EMAIL_BACKEND="django.core.mail.backends.smtp.EmailBackend", DEBUG=True
-)
 class GetAllAgentsTest(APITestCase):
     def setUp(self) -> None:
         """Set up a method which is used to initialize before any test run"""
@@ -94,6 +91,9 @@ class GetAllAgentsTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
+@override_settings(
+    EMAIL_BACKEND="django.core.mail.backends.smtp.EmailBackend", DEBUG=True
+)
 class CreateSingleAgentTest(APITestCase):
     def setUp(self) -> None:
         """Set up a method which is used to initialize before any test run"""
