@@ -1,6 +1,6 @@
 from rest_framework import permissions
 
-from applications.account.choices import ORGANIZER, AGENT
+from applications.account.choices import ORGANIZER
 
 
 class IsOrganizer(permissions.BasePermission):
@@ -37,12 +37,3 @@ class IsOrganizerOrReadOnly(permissions.BasePermission):
             or view.action == "destroy"
         ):
             return request.user.role == ORGANIZER
-
-
-class IsAgent(permissions.BasePermission):
-    message = {
-        "errors": "User is not an organizer. You can just access to read only operations"
-    }
-
-    def has_permission(self, request, view) -> bool:
-        return bool(request.user.role == AGENT and request.user.is_authenticated)
