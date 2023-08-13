@@ -10,6 +10,8 @@ from rest_framework.test import APITestCase
 
 from ..models import Agent
 from ..serializers import AgentModelSerializer
+from applications.leads.models import Lead
+import json
 
 User = get_user_model()
 
@@ -204,3 +206,164 @@ class CreateSingleAgentTest(APITestCase):
         response = self.client.post(url, agent_info, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+
+class EditSingleAssignedLead(APITestCase):
+    def setUp(self) -> None:
+        """Set up a method which is used to initialize before any test run"""
+        self.agent_info = self.generate_agent_info()
+        self.agent2_info = self.generate_agent2_info()
+        self.lead_info = self.generate_lead_info()
+        self.valid_payload = self.generate_valid_payload()
+
+    def generate_agent_info(self) -> dict:
+        """Generate agent info"""
+        return {
+            "email": AGENT_TEST_EMAIL_ADDRESS,
+            "birth": "1999-12-02",
+            "first_name": "Alex",
+            "last_name": "Cuenca",
+            "address": "Fausto Molina",
+            "phone": "0989181061",
+            "gender": "F",
+            "username": "AlexAgent",
+            "password": "randompassword123",
+            # "re_password": "randompassword123",
+            "role": "AGT",
+        }
+
+    def generate_agent2_info(self) -> dict:
+        """Generate agent 2 info"""
+        return {
+            "email": "agent@agent2.com",
+            "birth": "1999-12-02",
+            "first_name": "Alex",
+            "last_name": "Cuenca",
+            "address": "Fausto Molina",
+            "phone": "0989181061",
+            "gender": "F",
+            "username": "AlexAgent2",
+            "password": "randompassword123",
+            # "re_password": "randompassword123",
+            "role": "AGT",
+        }
+
+    def generate_lead_info(self) -> dict:
+        """Generate lead info"""
+        return {
+            "address": "Example street",
+            "phone": "123456789",
+            "last_name": "Scott",
+            "first_name": "Henry",
+            "email": "henry-lead@crm.com",
+            "birth": "1999-12-02",
+            "gender": "M",
+        }
+
+    def generate_valid_payload(self) -> dict:
+        """Generate valid payload"""
+        return {"category": "ASG"}
+
+    def test_forbidden_update_lead_assigned_me(self):
+        """Test for creating a single lead assigned by me using API"""
+
+        # User 2 and agent 2 creation
+        user = User.objects.create_user(**self.agent2_info)
+        user.is_active = True
+        user.save()
+
+        organization = user.user_profile
+        self.assertEquals(organization.id, 1)
+        agent_user = Agent.objects.create(user=user, organization=organization)
+        self.assertEquals(agent_user.id, 1)
+
+        # User creation
+        user = User.objects.create_user(**self.agent_info)
+        user.is_active = True
+        user.save()
+        organization = user.user_profile
+
+        self.assertEquals(organization.id, 2)
+
+        # Agent creation
+        agent_user = Agent.objects.create(user=user, organization=organization)
+        self.assertEquals(agent_user.id, 2)
+
+        # Lead creation
+        lead = Lead.objects.create(**self.lead_info)
+        lead.agent = agent_user
+        lead.save()
+
+        self.assertEquals(lead.agent.id, 2)
+
+        # Login agent user and get token
+        url = reverse("jwt-create")
+        agent_login_data = {
+            "email": self.agent2_info["email"],
+            "password": self.agent2_info["password"],
+        }
+        response = self.client.post(url, agent_login_data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsNotNone(response.data["access"])
+
+        token = response.data["access"]
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {token}")
+
+        # Category Update
+        url = reverse("agents_app:my-assigned-leads", kwargs={"pk": lead.id})
+
+        response = self.client.patch(
+            url,
+            data=json.dumps(self.valid_payload),
+            content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_update_lead_assigned_me(self):
+        """Test for creating a single lead assigned by me using API"""
+
+        # User creation
+        user = User.objects.create_user(**self.agent_info)
+        user.is_active = True
+        user.save()
+        organization = user.user_profile
+
+        self.assertEquals(organization.id, 1)
+
+        # Agent creation
+        agent_user = Agent.objects.create(user=user, organization=organization)
+        self.assertEquals(agent_user.id, 1)
+
+        # Lead creation
+        lead = Lead.objects.create(**self.lead_info)
+        lead.agent = agent_user
+        lead.save()
+
+        self.assertEquals(lead.agent.id, 1)
+
+        # Login agent user and get token
+        url = reverse("jwt-create")
+        agent_login_data = {
+            "email": self.agent_info["email"],
+            "password": self.agent_info["password"],
+        }
+        response = self.client.post(url, agent_login_data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsNotNone(response.data["access"])
+
+        token = response.data["access"]
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {token}")
+
+        # Category Update
+        url = reverse("agents_app:my-assigned-leads", kwargs={"pk": lead.id})
+
+        response = self.client.patch(
+            url,
+            data=json.dumps(self.valid_payload),
+            content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
