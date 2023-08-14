@@ -6,12 +6,12 @@ app_name = "agents_app"
 urlpatterns = [
     path("", include("applications.agents.routers")),
     path(
-        "leads/my-assigned-leads/<pk>",
+        "agents/my-assigned-leads/<pk>",
         MyAssignedLeadsRetrieveUpdateAPIView.as_view(),
         name="my-assigned-leads-detail",
     ),
     path(
-        "leads/my-assigned-leads/",
+        "agents/my-assigned-leads/",
         MyAssignedLeadsListAPIView.as_view(),
         name="my-assigned-leads-list",
     ),
