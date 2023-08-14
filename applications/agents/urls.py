@@ -8,7 +8,7 @@ urlpatterns = [
     path(
         "leads/my-assigned-leads/<pk>",
         MyAssignedLeadsRetrieveUpdateAPIView.as_view(),
-        name="my-assigned-leads",
+        name="my-assigned-leads-detail",
     ),
     path(
         "leads/my-assigned-leads/",
